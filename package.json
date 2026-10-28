@@ -43,7 +43,7 @@
     "deploy": "npm run build && node scripts/deploy.mjs"
   },
   "dependencies": {
-    "diff": "^5.2.0"
+    "diff": "^9.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
