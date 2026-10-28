@@ -28,7 +28,7 @@ Beyond Compare에서 영감을 받은 **순수 클라이언트 사이드** 텍�
 
 ## 로컬 개발
 
-Node.js 18 이상이 필요합니다.
+Node.js 20.19 이상 또는 22.12 이상이 필요합니다(Vite 8과 동일).
 
 ```bash
 npm install

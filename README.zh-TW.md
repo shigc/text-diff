@@ -28,7 +28,7 @@
 
 ## 本機開發
 
-需要 Node.js 18 以上版本。
+需要 Node.js 20.19+ 或 22.12+（與 Vite 8 的要求一致）。
 
 ```bash
 npm install

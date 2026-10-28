@@ -4,7 +4,7 @@
 
 ## 开发环境
 
-- Node.js >= 18
+- Node.js 20.19+ 或 22.12+（Vite 8 的要求）
 - npm
 
 ```bash

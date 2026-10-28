@@ -28,7 +28,7 @@ Sin instalación ni registro: abre y usa.
 
 ## Desarrollo local
 
-Requiere Node.js 18 o superior.
+Requiere Node.js 20.19+ o 22.12+ (igual que Vite 8).
 
 ```bash
 npm install

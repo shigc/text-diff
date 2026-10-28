@@ -28,7 +28,7 @@ Beyond Compare に着想を得た**完全クライアントサイド**のテキ�
 
 ## ローカル開発
 
-Node.js 18 以上が必要です。
+Node.js 20.19 以上、または 22.12 以上が必要です（Vite 8 と同じ要件）。
 
 ```bash
 npm install
