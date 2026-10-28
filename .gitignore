@@ -1,0 +1,21 @@
+# 依赖与构建产物
+node_modules/
+dist/
+dist-ssr/
+coverage/
+
+# 本地环境变量（含部署凭据），仅保留示例文件
+.env
+.env.*
+!.env.example
+*.local
+
+# 工具与系统文件
+.wrangler/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*

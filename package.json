@@ -1,0 +1,57 @@
+{
+  "name": "text-diff",
+  "version": "1.0.0",
+  "private": true,
+  "description": "仿 Beyond Compare 的纯前端文本差异对比工具，所有计算在浏览器本地完成",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "shigc",
+    "email": "2698340+shigc@users.noreply.github.com",
+    "url": "https://github.com/shigc"
+  },
+  "homepage": "https://diff.shigc.top/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shigc/text-diff.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shigc/text-diff/issues"
+  },
+  "keywords": [
+    "diff",
+    "text-diff",
+    "compare",
+    "beyond-compare",
+    "client-side",
+    "privacy",
+    "typescript",
+    "vite"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:obfuscated": "node scripts/build-obfuscated.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "deploy": "npm run build && node scripts/deploy.mjs"
+  },
+  "dependencies": {
+    "diff": "^5.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "javascript-obfuscator": "^5.9.0",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^5.4.21"
+  }
+}

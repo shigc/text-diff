@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="纯前端在线文本差异对比工具：并排 / 统一视图、行内字符级高亮、差异跳转、忽略空白与大小写，支持导出 HTML / PDF / CSV。文本不上传服务器。"
+    />
+    <meta name="theme-color" content="#0969da" />
+    <meta name="color-scheme" content="light" />
+    <link rel="canonical" href="https://diff.shigc.top/" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="text-diff" />
+    <meta property="og:title" content="text-diff · 在线文本差异对比" />
+    <meta
+      property="og:description"
+      content="仿 Beyond Compare 的纯前端文本对比工具，全部计算在浏览器本地完成，文本不会上传到任何服务器。"
+    />
+    <meta property="og:url" content="https://diff.shigc.top/" />
+    <meta property="og:image" content="https://diff.shigc.top/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="zh_CN" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="text-diff · 在线文本差异对比" />
+    <meta
+      name="twitter:description"
+      content="纯前端文本差异对比，支持并排 / 统一视图与 HTML / PDF / CSV 导出，文本不上传。"
+    />
+    <meta name="twitter:image" content="https://diff.shigc.top/og.png" />
+
+    <title data-i18n="app.title">文本差异对比</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%87%84%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <header class="toolbar">
+      <div class="toolbar__title" data-i18n="app.title">文本差异对比</div>
+
+      <div class="toolbar__group">
+        <label class="switch">
+          <input type="checkbox" id="opt-ignore-whitespace" />
+          <span data-i18n="opt.ignoreWhitespace">忽略空白字符</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="opt-ignore-case" />
+          <span data-i18n="opt.ignoreCase">忽略大小写</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="opt-show-whitespace" />
+          <span data-i18n="opt.showWhitespace">显示空白符号</span>
+        </label>
+      </div>
+
+      <div class="toolbar__group">
+        <span class="toolbar__label" data-i18n="view.label">视图</span>
+        <div class="seg-control">
+          <button
+            id="view-split"
+            class="view-btn view-btn--active"
+            type="button"
+            data-i18n="view.split"
+          >
+            并排
+          </button>
+          <button id="view-unified" class="view-btn" type="button" data-i18n="view.unified">
+            统一
+          </button>
+        </div>
+      </div>
+
+      <div class="toolbar__group">
+        <button id="btn-compare" class="btn btn--primary" type="button" data-i18n="btn.compare">
+          对比
+        </button>
+        <button id="btn-prev" class="btn" type="button" disabled data-i18n="btn.prev">
+          上一个差异
+        </button>
+        <button id="btn-next" class="btn" type="button" disabled data-i18n="btn.next">
+          下一个差异
+        </button>
+        <span id="diff-counter" class="counter" data-i18n="counter.none">无差异</span>
+      </div>
+
+      <div class="toolbar__group">
+        <button id="btn-export" class="btn" type="button" disabled data-i18n="btn.exportHtml">
+          导出 HTML
+        </button>
+        <button id="btn-export-pdf" class="btn" type="button" disabled data-i18n="btn.exportPdf">
+          导出 PDF
+        </button>
+        <button id="btn-export-csv" class="btn" type="button" disabled data-i18n="btn.exportCsv">
+          导出 CSV
+        </button>
+      </div>
+
+      <div class="toolbar__group toolbar__group--end">
+        <label class="toolbar__label" for="lang-select" data-i18n="lang.label">语言</label>
+        <select id="lang-select" class="lang-select"></select>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="editors">
+        <div class="editor" data-side="left">
+          <div class="editor__bar">
+            <span class="editor__name" id="left-name">左侧文本</span>
+            <button class="btn btn--sm" type="button" data-pick="left" data-i18n="btn.pickFile">
+              选择文件
+            </button>
+            <input type="file" hidden id="left-file" />
+          </div>
+          <textarea
+            id="left-input"
+            class="editor__area"
+            spellcheck="false"
+            data-i18n-placeholder="editor.leftPlaceholder"
+            placeholder="在此粘贴或输入左侧文本，也可将文件拖拽到此区域…"
+          ></textarea>
+        </div>
+
+        <div class="editor" data-side="right">
+          <div class="editor__bar">
+            <span class="editor__name" id="right-name">右侧文本</span>
+            <button class="btn btn--sm" type="button" data-pick="right" data-i18n="btn.pickFile">
+              选择文件
+            </button>
+            <input type="file" hidden id="right-file" />
+          </div>
+          <textarea
+            id="right-input"
+            class="editor__area"
+            spellcheck="false"
+            data-i18n-placeholder="editor.rightPlaceholder"
+            placeholder="在此粘贴或输入右侧文本，也可将文件拖拽到此区域…"
+          ></textarea>
+        </div>
+      </section>
+
+      <section class="result" id="result">
+        <div class="result__placeholder" id="result-placeholder" data-i18n="result.placeholder">
+          对比结果将显示在这里
+        </div>
+        <div class="diff-scroll" id="diff-scroll" hidden>
+          <table class="diff-table diff-table--split" id="table-split">
+            <colgroup>
+              <col class="col-no" />
+              <col class="col-code" />
+              <col class="col-no" />
+              <col class="col-code" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="2" class="diff-head" id="head-left" data-i18n="head.left">左侧</th>
+                <th colspan="2" class="diff-head" id="head-right" data-i18n="head.right">右侧</th>
+              </tr>
+            </thead>
+            <tbody id="diff-body"></tbody>
+          </table>
+          <table class="diff-table diff-table--unified" id="table-unified" hidden>
+            <colgroup>
+              <col class="col-no" />
+              <col class="col-no" />
+              <col class="col-code" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="2" class="diff-head" data-i18n="head.lineNo">行号（左 / 右）</th>
+                <th class="diff-head" data-i18n="head.content">内容</th>
+              </tr>
+            </thead>
+            <tbody id="diff-body-unified"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
